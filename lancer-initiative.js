@@ -56,7 +56,7 @@ async function setup() {
 }
 
 function registerSettings() {
-  console.log("lancer-initiative | Initializing LANCER Initiative Module");
+  console.log("lancer-initiative | Initializing Lancer Initiative Module");
   game.settings.register("lancer-initiative", "pc-col", {
     name: "Player button color",
     hint: "Default: $44abe0",
@@ -164,6 +164,9 @@ function handleCreateCombatant(combat, combatant, options, userId) {
 Hooks.once("init", () => { // Detect and recover from Foundry deciding that it doesn't want to save data.
   setup();
   registerSettings();
+});
+
+Hooks.once("ready", () => {
   if (! game.user.isGM ) return;
   game.combats.map(c => {
     c.combatants.map(t => {
