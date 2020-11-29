@@ -1,11 +1,13 @@
 import {libWrapper} from './module/shim.js';
+import {LancerCombat} from './module/lancercombat.js';
 
 async function setup() {
-  libWrapper.register('lancer-initiative', 'Combat.prototype._sortCombatants', function (w, a, b) {
+  CONFIG.Combat.entityClass = LancerCombat;
+  /*libWrapper.register('lancer-initiative', 'Combat.prototype._sortCombatants', function (w, a, b) {
     let r = sortCombatants(a, b);
     if (r === 0) r = w.apply(this, [a, b]);
     return r;
-  });
+  });*/
 
   libWrapper.register('lancer-initiative', 'CombatTracker.prototype._getEntryContextOptions', function(w) {
     let m = [
@@ -14,10 +16,10 @@ async function setup() {
         icon: '<i class="fas fa-plus"></i>',
         callback:  async (li) => {
           const combatant = this.combat.getCombatant(li.data('combatant-id'));
-          let max = combatant.flags.activations.max + 1;
+          let max = combatant.activations.max + 1;
           await this.combat.updateCombatant({
             _id: combatant._id,
-            "flags.activations.max": max
+            "activations.max": max
           });
         }
       },
@@ -26,12 +28,12 @@ async function setup() {
         icon: '<i class="fas fa-minus"></i>',
         callback:  async (li) => {
           const combatant = this.combat.getCombatant(li.data('combatant-id'));
-          let max = combatant.flags.activations.max - 1;
-          let cur = clampNumber(combatant.flags.activations.value, 0, max > 0 ? max : 1);
+          let max = combatant.activations.max - 1;
+          let cur = clampNumber(combatant.activations.value, 0, max > 0 ? max : 1);
           await this.combat.updateCombatant({
             _id: combatant._id,
-            "flags.activations.max": max > 0 ? max : 1,
-            "flags.activations.value": cur
+            "activations.max": max > 0 ? max : 1,
+            "activations.value": cur
           });
         }
       },
@@ -40,11 +42,11 @@ async function setup() {
         icon: '<i class="fas fa-undo"></i>',
         callback: li => {
           const combatant = this.combat.getCombatant(li.data('combatant-id'));
-          let max = combatant.flags.activations.max;
-          let cur = clampNumber(combatant.flags.activations.value+1, 0, max > 0 ? max : 1);
+          let max = combatant.activations.max;
+          let cur = clampNumber(combatant.activations.value+1, 0, max > 0 ? max : 1);
           this.combat.updateCombatant({
             _id: combatant._id,
-            "flags.activations.value": cur
+            "activations.value": cur
           });
         }
       }
@@ -127,8 +129,8 @@ function sortCombatants(a, b) {
 function handleCreateCombat(combat, options, userId) {
   if (game.user.isGM) combat.createCombatant({
     name: "DUMMY",
-    flags: { dummy: true },
-    hidden: true
+    dummy: true,
+    hidden: false
   });
 }
 
@@ -166,6 +168,7 @@ Hooks.once("init", () => { // Detect and recover from Foundry deciding that it d
   registerSettings();
 });
 
+/*
 Hooks.once("ready", () => {
   if (! game.user.isGM ) return;
   game.combats.map(c => {
@@ -185,24 +188,25 @@ Hooks.once("ready", () => {
     });
   });
 });
+*/
 
-Hooks.on("createCombat", handleCreateCombat);
-Hooks.on("updateCombat", handleUpdateCombat);
-Hooks.on("createCombatant", handleCreateCombatant);
+//Hooks.on("createCombat", handleCreateCombat);
+//Hooks.on("updateCombat", handleUpdateCombat);
+//Hooks.on("createCombatant", handleCreateCombatant);
 
 Hooks.on("renderCombatTracker", async (app, html, data) => {
     html.find(".combatant").each((i, element) => {
         const c_id = element.dataset.combatantId;
         const combatant = data.combat.combatants.find(c => c._id === c_id);
 
-        if ( combatant.flags?.dummy === true) return;
+        if ( combatant.dummy === true) return;
 
         const init_div = element.getElementsByClassName("token-initiative")[0];
 
         // Retrieve settings
         let color = "#00000000"
         let done_color = game.settings.get("lancer-initiative", "xx-col");
-        switch (combatant.token?.disposition) {
+        switch (combatant.disposition) {
             case 1: // Player
                 color = game.settings.get("lancer-initiative", "pc-col");
                 break;
@@ -217,9 +221,9 @@ Hooks.on("renderCombatTracker", async (app, html, data) => {
         let icon = game.settings.get("lancer-initiative", "icon");
 
         //get activations
-        let pending = combatant.flags.activations?.value;
+        let pending = combatant.activations?.value;
         if ( pending === undefined ) pending = 0;
-        let finished = combatant.flags.activations?.max - pending;
+        let finished = combatant.activations?.max - pending;
 
         init_div.innerHTML = `<a class='${icon}' title='Activate' style='color: ${color};'></a>`.repeat(pending);
         init_div.innerHTML += `<a class='${icon}' title='Activate' style='color: ${done_color};'></a>`.repeat(finished);
@@ -228,11 +232,11 @@ Hooks.on("renderCombatTracker", async (app, html, data) => {
 
         // Create click action
         init_div.addEventListener("click", async e => {
-            let val = combatant.flags.activations.value
+            let val = combatant.activations.value
             if (val === 0) return;
             await data.combat.updateCombatant({ // Sync here in case tracker order changes
                 _id: combatant._id,
-                "flags.activations.value": val-1
+                "activations.value": val-1
             });
             const turn = data.combat.turns.findIndex(t => t._id === c_id);
             await data.combat.update({ turn: turn });
