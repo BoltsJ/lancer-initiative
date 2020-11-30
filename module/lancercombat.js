@@ -10,7 +10,6 @@ export class LancerCombat extends Combat {
     c.disposition = c.token?.disposition ?? null;
 
     c.dummy = c.dummy ?? c.flags?.dummy ?? false;
-    //c.visible = c.dummy ? 0 : c.visible;
 
     return c;
   }
@@ -29,16 +28,15 @@ export class LancerCombat extends Combat {
     // Sort by Players then Neutrals then Hostiles
     const dc = b.disposition - a.disposition;
     if ( dc !== 0 ) return dc;
-    return super._sortCombatants(a, b);
+    return super._sortCombatants(a, b); // fallback
   }
 
   /* @override */
   _onCreate(...args) {
-    console.log(args);
-    if (this.owner) this.createCombatant({
+    super._onCreate(args);
+    this.createCombatant({
       "flags.dummy": true,
     });
-    super._onCreate(args);
   }
 
   /* @public */

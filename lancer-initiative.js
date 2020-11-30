@@ -1,9 +1,8 @@
 import {libWrapper} from './module/shim.js';
 import {LancerCombat} from './module/lancercombat.js';
 
-CONFIG.Combat.entityClass = LancerCombat;
-
 async function setup() {
+  CONFIG.Combat.entityClass = LancerCombat;
   /*libWrapper.register('lancer-initiative', 'Combat.prototype._sortCombatants', function (w, a, b) {
     let r = sortCombatants(a, b);
     if (r === 0) r = w.apply(this, [a, b]);
