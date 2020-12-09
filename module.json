@@ -4,7 +4,7 @@
     "description": "Implements Lancer's popcorn style initiative in Foundry VTT",
     "author": "Bolts",
     "type": "module",
-    "version": "0.2.0a",
+    "version": "0.3.0a",
     "minimumCoreVersion": "0.7.0",
     "compatibleCoreVersion": "0.7.7",
     "esmodules": [
