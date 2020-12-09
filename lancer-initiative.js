@@ -46,7 +46,7 @@ function registerSettings() {
   });
   game.settings.register("lancer-initiative", "act-sort-last", {
     name: "Activated units last",
-    hint: "Moves units that have activated to the end of the tracker.  WARNING: Enabling this can prevent some modules from detecting turn changes",
+    hint: "Moves units that have taken their turn to the end of the tracker.",
     scope: "world",
     config: true,
     type: Boolean,
@@ -59,46 +59,4 @@ function registerSettings() {
 }
 
 Hooks.once("init", registerSettings);
-
-Hooks.on("renderCombatTracker", async (app, html, data) => {
-    html.find(".combatant").each((i, element) => {
-        const c_id = element.dataset.combatantId;
-        const combatant = data.combat.getCombatant(c_id);
-
-        if ( combatant.flags?.dummy === true) return;
-
-        const init_div = element.getElementsByClassName("token-initiative")[0];
-
-        // Retrieve settings
-        let color = "";
-        let done_color = game.settings.get("lancer-initiative", "xx-col");
-        switch (combatant.token?.disposition) {
-            case 1: // Player
-                color = game.settings.get("lancer-initiative", "pc-col");
-                break;
-            case 0: // Neutral
-                color = game.settings.get("lancer-initiative", "nu-col");
-                break;
-            case -1: // Hostile
-                color = game.settings.get("lancer-initiative", "en-col");
-                break;
-            default:
-        }
-        let icon = game.settings.get("lancer-initiative", "icon");
-
-        //get activations
-        let pending = combatant.flags.activations?.value;
-        if ( pending === undefined ) pending = 0;
-        let finished = combatant.flags.activations?.max - pending;
-
-        init_div.innerHTML = `<a class='${icon}' title='Activate' style='color: ${color};'></a>`.repeat(pending);
-        init_div.innerHTML += `<a class='${icon}' title='Activate' style='color: ${done_color};'></a>`.repeat(finished);
-
-        element.style.borderColor = color;
-
-        // Create click action
-        init_div.addEventListener("click", async e => {
-          await data.combat.activateCombatant(c_id);
-        });
-    });
-});
+Hooks.on("renderCombatTracker", LancerCombatTracker.handleRender);
