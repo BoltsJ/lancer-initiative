@@ -37,3 +37,7 @@ a.li-icon-xlarge {
   color: inherit;
   text-decoration: inherit;
 }
+
+#combat #combat-controls .combat-control[data-control="previousTurn"], #combat #combat-controls .combat-control[data-control="nextTurn"] {
+  display: none !important;
+}

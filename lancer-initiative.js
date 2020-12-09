@@ -192,14 +192,14 @@ Hooks.on("createCombatant", handleCreateCombatant);
 Hooks.on("renderCombatTracker", async (app, html, data) => {
     html.find(".combatant").each((i, element) => {
         const c_id = element.dataset.combatantId;
-        const combatant = data.combat.combatants.find(c => c._id === c_id);
+        const combatant = data.combat.getCombatant(c_id);
 
         if ( combatant.flags?.dummy === true) return;
 
         const init_div = element.getElementsByClassName("token-initiative")[0];
 
         // Retrieve settings
-        let color = "#00000000"
+        let color = "";
         let done_color = game.settings.get("lancer-initiative", "xx-col");
         switch (combatant.token?.disposition) {
             case 1: // Player
@@ -236,12 +236,5 @@ Hooks.on("renderCombatTracker", async (app, html, data) => {
             const turn = data.combat.turns.findIndex(t => t._id === c_id);
             await data.combat.update({ turn: turn });
         });
-    });
-
-    // Hide the turn buttons
-    html.find(".combat-control").each((i, e) => {
-        if (e.dataset.control === "previousTurn" || e.dataset.control === "nextTurn") {
-            e.style.display = "none";
-        }
     });
 });
