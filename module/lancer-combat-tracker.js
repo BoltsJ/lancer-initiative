@@ -44,7 +44,7 @@ export class LancerCombatTracker extends CombatTracker {
         callback: async li => {
           const combatant = this.combat.getCombatant(li.data("combatant-id"));
           let max = combatant.flags.activations.max - 1;
-          let cur = clampNumber(combatant.flags.activations.value, 0, max > 0 ? max : 1);
+          let cur = Math.clamped(combatant.flags.activations.value, 0, max > 0 ? max : 1);
           await this.combat.updateCombatant({
             _id: combatant._id,
             "flags.activations.max": max > 0 ? max : 1,
@@ -58,7 +58,7 @@ export class LancerCombatTracker extends CombatTracker {
         callback: li => {
           const combatant = this.combat.getCombatant(li.data("combatant-id"));
           let max = combatant.flags.activations.max;
-          let cur = clampNumber(combatant.flags.activations.value + 1, 0, max > 0 ? max : 1);
+          let cur = Math.clamped(combatant.flags.activations.value + 1, 0, max > 0 ? max : 1);
           this.combat.updateCombatant({
             _id: combatant._id,
             "flags.activations.value": cur,
@@ -73,9 +73,10 @@ export class LancerCombatTracker extends CombatTracker {
   /**
    * Helper function to modify the combat tracker. Must be hooked to the
    * renderCombatTracker event
+   * @static
    */
-  static handleRender(app, html, data) {
-    html.find(".combatant").each((i, element) => {
+  static handleRender(_, html, data) {
+    html.find(".combatant").each((_, element) => {
       const c_id = element.dataset.combatantId;
       const combatant = data.combat.getCombatant(c_id);
 
@@ -115,7 +116,7 @@ export class LancerCombatTracker extends CombatTracker {
       element.style.borderColor = color;
 
       // Create click action
-      init_div.addEventListener("click", async e => {
+      init_div.addEventListener("click", async _ => {
         await data.combat.activateCombatant(c_id);
       });
     });

@@ -1,5 +1,9 @@
 export class LancerCombat extends Combat {
   /**
+   * @param {object} c Combatant
+   * @param {Scene} scene Scen containing the combat
+   * @param {User[]} players
+   * @param {object} settings
    * @override
    */
   _prepareCombatant(c, scene, players, settings = {}) {
@@ -16,6 +20,8 @@ export class LancerCombat extends Combat {
   }
 
   /**
+   * @param {object} a Combatant
+   * @param {object} b Combatant
    * @override
    */
   _sortCombatants(a, b) {
@@ -28,15 +34,18 @@ export class LancerCombat extends Combat {
   }
 
   /**
+   * @param {object} data
+   * @param {object} options
+   * @param {string} userId
    * @override
    */
-  _onCreate(...args) {
+  _onCreate(data, options, userId) {
     if (this.owner)
       this.createCombatant({
         "flags.dummy": true,
         hidden: true,
       });
-    super._onCreate(args);
+    super._onCreate(data, options, userId);
   }
 
   /**
@@ -76,7 +85,7 @@ export class LancerCombat extends Combat {
     await this.resetActivations();
     let turn = 0;
     const round = Math.max(this.round - 1, 0);
-    let advanceTime = -1 * this.data.turn * CONFIG.time.turnTime;
+    let advanceTime = -1 * this.turn * CONFIG.time.turnTime;
     if (round > 0) advanceTime -= CONFIG.time.roundTime;
     return this.update({ round, turn }, { advanceTime });
   }
@@ -91,6 +100,7 @@ export class LancerCombat extends Combat {
 
   /**
    * Sets the active turn to the combatant passed by id
+   * @param {string} id
    */
   async activateCombatant(id) {
     if (!game.user.isGM) return;
