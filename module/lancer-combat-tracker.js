@@ -11,7 +11,7 @@ export class LancerCombatTracker extends CombatTracker {
     const sort = game.settings.get("lancer-initiative", "act-sort-last");
     if (!data.hasCombat || !sort) return data;
     let turns = Array.from(data.turns);
-    turns = turns.sort(function(a, b) {
+    turns = turns.sort(function (a, b) {
       const ad = a.flags.activations.value === 0 && a.css.indexOf("active") === -1;
       const bd = b.flags.activations.value === 0 && b.css.indexOf("active") === -1;
       return ad - bd;
@@ -29,44 +29,44 @@ export class LancerCombatTracker extends CombatTracker {
       {
         name: "Add Activation",
         icon: '<i class="fas fa-plus"></i>',
-        callback:  async (li) => {
-          const combatant = this.combat.getCombatant(li.data('combatant-id'));
+        callback: async li => {
+          const combatant = this.combat.getCombatant(li.data("combatant-id"));
           let max = combatant.flags.activations.max + 1;
           await this.combat.updateCombatant({
             _id: combatant._id,
-            "flags.activations.max": max
+            "flags.activations.max": max,
           });
-        }
+        },
       },
       {
         name: "Remove Activation",
         icon: '<i class="fas fa-minus"></i>',
-        callback:  async (li) => {
-          const combatant = this.combat.getCombatant(li.data('combatant-id'));
+        callback: async li => {
+          const combatant = this.combat.getCombatant(li.data("combatant-id"));
           let max = combatant.flags.activations.max - 1;
           let cur = clampNumber(combatant.flags.activations.value, 0, max > 0 ? max : 1);
           await this.combat.updateCombatant({
             _id: combatant._id,
             "flags.activations.max": max > 0 ? max : 1,
-            "flags.activations.value": cur
+            "flags.activations.value": cur,
           });
-        }
+        },
       },
       {
         name: "Undo Activation",
         icon: '<i class="fas fa-undo"></i>',
         callback: li => {
-          const combatant = this.combat.getCombatant(li.data('combatant-id'));
+          const combatant = this.combat.getCombatant(li.data("combatant-id"));
           let max = combatant.flags.activations.max;
-          let cur = clampNumber(combatant.flags.activations.value+1, 0, max > 0 ? max : 1);
+          let cur = clampNumber(combatant.flags.activations.value + 1, 0, max > 0 ? max : 1);
           this.combat.updateCombatant({
             _id: combatant._id,
-            "flags.activations.value": cur
+            "flags.activations.value": cur,
           });
-        }
-      }
+        },
+      },
     ];
-    m.push(...super._getEntryContextOptions().filter(i => i.name !== "COMBAT.CombatantReroll"))
+    m.push(...super._getEntryContextOptions().filter(i => i.name !== "COMBAT.CombatantReroll"));
     return m;
   }
 
@@ -79,7 +79,7 @@ export class LancerCombatTracker extends CombatTracker {
       const c_id = element.dataset.combatantId;
       const combatant = data.combat.getCombatant(c_id);
 
-      if ( combatant.flags?.dummy === true) return;
+      if (combatant.flags?.dummy === true) return;
 
       const init_div = element.getElementsByClassName("token-initiative")[0];
 
@@ -102,11 +102,15 @@ export class LancerCombatTracker extends CombatTracker {
 
       //get activations
       let pending = combatant.flags.activations?.value;
-      if ( pending === undefined ) pending = 0;
+      if (pending === undefined) pending = 0;
       let finished = combatant.flags.activations?.max - pending;
 
-      init_div.innerHTML = `<a class='${icon}' title='Activate' style='color: ${color};'></a>`.repeat(pending);
-      init_div.innerHTML += `<a class='${icon}' title='Activate' style='color: ${done_color};'></a>`.repeat(finished);
+      init_div.innerHTML = `<a class='${icon}' title='Activate' style='color: ${color};'></a>`.repeat(
+        pending
+      );
+      init_div.innerHTML += `<a class='${icon}' title='Activate' style='color: ${done_color};'></a>`.repeat(
+        finished
+      );
 
       element.style.borderColor = color;
 

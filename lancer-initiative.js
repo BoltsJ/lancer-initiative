@@ -1,5 +1,5 @@
-import { LancerCombat } from './module/lancer-combat.js';
-import { LancerCombatTracker } from './module/lancer-combat-tracker.js';
+import { LancerCombat } from "./module/lancer-combat.js";
+import { LancerCombatTracker } from "./module/lancer-combat-tracker.js";
 
 function registerSettings() {
   console.log("lancer-initiative | Initializing Lancer Initiative Module");
@@ -10,7 +10,7 @@ function registerSettings() {
     scope: "world",
     config: true,
     type: String,
-    default: "#44abe0"
+    default: "#44abe0",
   });
   game.settings.register("lancer-initiative", "nu-col", {
     name: "Neutral button color",
@@ -18,7 +18,7 @@ function registerSettings() {
     scope: "world",
     config: true,
     type: String,
-    default: "#146464"
+    default: "#146464",
   });
   game.settings.register("lancer-initiative", "en-col", {
     name: "Enemy button color",
@@ -26,7 +26,7 @@ function registerSettings() {
     scope: "world",
     config: true,
     type: String,
-    default: "#d98f30"
+    default: "#d98f30",
   });
   game.settings.register("lancer-initiative", "xx-col", {
     name: "Inactive button color",
@@ -34,15 +34,16 @@ function registerSettings() {
     scope: "world",
     config: true,
     type: String,
-    default: "#444444"
+    default: "#444444",
   });
   game.settings.register("lancer-initiative", "icon", {
     name: "Action Icon",
-    hint: "CSS classes to define the activation icon; li-icon, li-icon-large, and li-icon-xlarge are defined to increase the size if needed",
+    hint:
+      "CSS classes to define the activation icon; li-icon, li-icon-large, and li-icon-xlarge are defined to increase the size if needed",
     scope: "world",
     config: true,
     type: String,
-    default: "cci cci-activate li-icon-large"
+    default: "cci cci-activate li-icon-large",
   });
   game.settings.register("lancer-initiative", "act-sort-last", {
     name: "Activated units last",
@@ -50,7 +51,7 @@ function registerSettings() {
     scope: "world",
     config: true,
     type: Boolean,
-    default: false
+    default: false,
   });
 
   // Override classes

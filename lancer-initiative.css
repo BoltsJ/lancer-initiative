@@ -1,5 +1,5 @@
 li.combatant {
-  padding-right: .5em;
+  padding-right: 0.5em;
   border: 3px;
   border-radius: 5px;
   border-color: #444444;
@@ -22,7 +22,7 @@ a.li-icon-xlarge {
 }
 
 #combat #combat-tracker .combatant .token-initiative {
-  padding-left: .5em;
+  padding-left: 0.5em;
   align-items: center;
   display: flex;
   position: relative;
@@ -38,6 +38,7 @@ a.li-icon-xlarge {
   text-decoration: inherit;
 }
 
-#combat #combat-controls .combat-control[data-control="previousTurn"], #combat #combat-controls .combat-control[data-control="nextTurn"] {
+#combat #combat-controls .combat-control[data-control="previousTurn"],
+#combat #combat-controls .combat-control[data-control="nextTurn"] {
   display: none !important;
 }

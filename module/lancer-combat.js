@@ -1,9 +1,8 @@
 export class LancerCombat extends Combat {
-
   /**
    * @override
    */
-  _prepareCombatant(c, scene, players, settings={}) {
+  _prepareCombatant(c, scene, players, settings = {}) {
     c = super._prepareCombatant(c, scene, players, settings);
 
     // Populate activation data
@@ -20,11 +19,11 @@ export class LancerCombat extends Combat {
    * @override
    */
   _sortCombatants(a, b) {
-    if ( a.flags.dummy ) return -1;
-    if ( b.flags.dummy ) return 1;
+    if (a.flags.dummy) return -1;
+    if (b.flags.dummy) return 1;
     // Sort by Players then Neutrals then Hostiles
     const dc = b.token?.disposition - a.token?.disposition;
-    if ( dc !== 0 ) return dc;
+    if (dc !== 0) return dc;
     return super._sortCombatants(a, b);
   }
 
@@ -32,10 +31,11 @@ export class LancerCombat extends Combat {
    * @override
    */
   _onCreate(...args) {
-    if (this.owner) this.createCombatant({
-      "flags.dummy": true,
-      hidden: true,
-    });
+    if (this.owner)
+      this.createCombatant({
+        "flags.dummy": true,
+        hidden: true,
+      });
     super._onCreate(args);
   }
 
@@ -43,11 +43,13 @@ export class LancerCombat extends Combat {
    * @public
    */
   async resetActivations() {
-    let updates = this.combatants.map(c => { return {
-      _id: c._id,
-      "flags.activations.value": c.defeated ? 0 : c.flags.activations.max,
-      "flags.activations.max": c.flags.activations.max,
-    }});
+    let updates = this.combatants.map(c => {
+      return {
+        _id: c._id,
+        "flags.activations.value": c.defeated ? 0 : c.flags.activations.max,
+        "flags.activations.max": c.flags.activations.max,
+      };
+    });
     await this.updateCombatant(updates);
   }
 
@@ -75,8 +77,8 @@ export class LancerCombat extends Combat {
     let turn = 0;
     const round = Math.max(this.round - 1, 0);
     let advanceTime = -1 * this.data.turn * CONFIG.time.turnTime;
-    if ( round > 0 ) advanceTime -= CONFIG.time.roundTime;
-    return this.update({round, turn}, {advanceTime});
+    if (round > 0) advanceTime -= CONFIG.time.roundTime;
+    return this.update({ round, turn }, { advanceTime });
   }
 
   /**
@@ -100,6 +102,6 @@ export class LancerCombat extends Combat {
       "flags.activations.value": val - 1,
     });
     const turn = this.turns.findIndex(t => t._id === id);
-    return this.update({turn});
+    return this.update({ turn });
   }
 }
