@@ -22,6 +22,7 @@ export class LancerCombatTracker extends CombatTracker {
   }
 
   /**
+   * @return {any[]}
    * @override
    */
   _getEntryContextOptions() {
@@ -76,6 +77,13 @@ export class LancerCombatTracker extends CombatTracker {
    * @static
    */
   static handleRender(_, html, data) {
+    const options = {
+      friendly: game.settings.get("lancer-initiative", "pc-col"),
+      neutral: game.settings.get("lancer-initiative", "nu-col"),
+      hostile: game.settings.get("lancer-initiative", "en-col"),
+      inactive: game.settings.get("lancer-initiative", "xx-col"),
+      icon: game.settings.get("lancer-initiative", "icon"),
+    };
     html.find(".combatant").each((_, element) => {
       const c_id = element.dataset.combatantId;
       const combatant = data.combat.getCombatant(c_id);
@@ -86,20 +94,20 @@ export class LancerCombatTracker extends CombatTracker {
 
       // Retrieve settings
       let color = "";
-      let done_color = game.settings.get("lancer-initiative", "xx-col");
+      let done_color = options.inactive;
       switch (combatant.token?.disposition) {
         case 1: // Player
-          color = game.settings.get("lancer-initiative", "pc-col");
+          color = options.friendly;
           break;
         case 0: // Neutral
-          color = game.settings.get("lancer-initiative", "nu-col");
+          color = options.neutral;
           break;
         case -1: // Hostile
-          color = game.settings.get("lancer-initiative", "en-col");
+          color = options.hostile;
           break;
         default:
       }
-      let icon = game.settings.get("lancer-initiative", "icon");
+      let icon = options.icon;
 
       //get activations
       let pending = combatant.flags.activations?.value;
