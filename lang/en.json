@@ -1,13 +1,17 @@
 {
-  "LANCERINITIATIVE.PCColor": "Player Color",
-  "LANCERINITIATIVE.NeutralColor": "Neutral Color",
-  "LANCERINITIATIVE.EnemyColor": "Enemy Color",
-  "LANCERINITIATIVE.DoneColor": "Inactive Color",
-  "LANCERINITIATIVE.Icon": "Action Icon",
-  "LANCERINITIATIVE.IconDesc": "CSS classes to define the activation icon; li-icon, li-icon-large, and li-icon-xlarge are defined to increase the size if needed",
-  "LANCERINITIATIVE.ActivatedLast": "Activated Units Last",
-  "LANCERINITIATIVE.ActivatedLastDesc": "Moves units that have taken their turn to the end of the tracker.",
-  "LANCERINITIATIVE.AddActivation": "Add Activation",
-  "LANCERINITIATIVE.RemoveActivation": "Remove Activation",
-  "LANCERINITIATIVE.UndoActivation": "Undo Activation"
+  "LancerInitiative.AddActivation": "Add Activation",
+  "LancerInitiative.RemoveActivation": "Remove Activation",
+  "LancerInitiative.UndoActivation": "Undo Activation",
+  "LancerInitiative.Settings.PlayerButtonColor": "Player button color",
+  "LancerInitiative.Settings.PlayerButtonColorHint": "Default: $44abe0",
+  "LancerInitiative.Settings.NeutralButtonColor": "Neutral button color",
+  "LancerInitiative.Settings.NeutralButtonColorHint": "Default: #146464",
+  "LancerInitiative.Settings.EnemyButtonColor": "Enemy button color",
+  "LancerInitiative.Settings.EnemyButtonColorHint": "Default: #d98f30",
+  "LancerInitiative.Settings.InactiveButtonColor": "Inactive button color",
+  "LancerInitiative.Settings.InactiveButtonColorHint": "Default: #444444",
+  "LancerInitiative.Settings.ActionIcon": "Action Icon",
+  "LancerInitiative.Settings.ActionIconHint": "CSS classes to define the activation icon; li-icon, li-icon-large, and li-icon-xlarge are defined to increase the size if needed",
+  "LancerInitiative.Settings.ActivatedUnitsLast": "Activated units last",
+  "LancerInitiative.Settings.ActivatedUnitsLastHint": "Moves units that have taken their turn to the end of the tracker."
 }

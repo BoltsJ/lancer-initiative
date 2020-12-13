@@ -1,0 +1,17 @@
+{
+  "LancerInitiative.AddActivation": "Añadir activación",
+  "LancerInitiative.RemoveActivation": "Quitar activación",
+  "LancerInitiative.UndoActivation": "Restaurar activación",
+  "LancerInitiative.Settings.PlayerButtonColor": "Color del botón para jugadores",
+  "LancerInitiative.Settings.PlayerButtonColorHint": "Predeterminado: $44abe0",
+  "LancerInitiative.Settings.NeutralButtonColor": "Color del botón para neutrales",
+  "LancerInitiative.Settings.NeutralButtonColorHint": "Predeterminado: #146464",
+  "LancerInitiative.Settings.EnemyButtonColor": "Color del botón para enemigos",
+  "LancerInitiative.Settings.EnemyButtonColorHint": "Predeterminado: #d98f30",
+  "LancerInitiative.Settings.InactiveButtonColor": "Color del botón para inactivos",
+  "LancerInitiative.Settings.InactiveButtonColorHint": "Predeterminado: #444444",
+  "LancerInitiative.Settings.ActionIcon": "Icono de acción",
+  "LancerInitiative.Settings.ActionIconHint": "Clases de CSS que definen el icono de activación; si necesitas incrementar el tamaño tienes disponibles li-icon, li-icon-large y li-icon-xlarge",
+  "LancerInitiative.Settings.ActivatedUnitsLast": "Unidades ya activadas al final",
+  "LancerInitiative.Settings.ActivatedUnitsLastHint": "Mueve las unidades que ya pasaron su turno al final del asistente."
+}

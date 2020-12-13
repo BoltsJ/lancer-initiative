@@ -5,32 +5,32 @@ function registerSettings() {
   console.log("lancer-initiative | Initializing Lancer Initiative Module");
 
   game.settings.register("lancer-initiative", "pc-col", {
-    name: game.i18n.localize("LANCERINITIATIVE.PCColor"),
-    hint: "Default: $44abe0",
+    name: "LancerInitiative.Settings.PlayerButtonColor",
+    hint: "LancerInitiative.Settings.PlayerButtonColorHint",
     scope: "world",
     config: true,
     type: String,
     default: "#44abe0",
   });
   game.settings.register("lancer-initiative", "nu-col", {
-    name: game.i18n.localize("LANCERINITIATIVE.NeutralColor"),
-    hint: "Default: #146464",
+    name: "LancerInitiative.Settings.NeutralButtonColor",
+    hint: "LancerInitiative.Settings.NeutralButtonColorHint",
     scope: "world",
     config: true,
     type: String,
     default: "#146464",
   });
   game.settings.register("lancer-initiative", "en-col", {
-    name: game.i18n.localize("LANCERINITIATIVE.EnemyColor"),
-    hint: "Default: #d98f30",
+    name: "LancerInitiative.Settings.EnemyButtonColor",
+    hint: "LancerInitiative.Settings.EnemyButtonColorHint",
     scope: "world",
     config: true,
     type: String,
     default: "#d98f30",
   });
   game.settings.register("lancer-initiative", "xx-col", {
-    name: game.i18n.localize("LANCERINITIATIVE.DoneColor"),
-    hint: "Default: #444444",
+    name: "LancerInitiative.Settings.InactiveButtonColor",
+    hint: "LancerInitiative.Settings.InactiveButtonColorHint",
     scope: "world",
     config: true,
     type: String,
@@ -47,16 +47,16 @@ function registerSettings() {
   }
 
   game.settings.register("lancer-initiative", "icon", {
-    name: game.i18n.localize("LANCERINITIATIVE.Icon"),
-    hint: game.i18n.localize("LANCERINITIATIVE.IconDesc"),
+    name: "LancerInitiative.Settings.ActionIcon",
+    hint: "LancerInitiative.Settings.ActionIconHint",
     scope: "world",
     config: true,
     type: String,
     default: def_icon,
   });
   game.settings.register("lancer-initiative", "act-sort-last", {
-    name: game.i18n.localize("LANCERINITIATIVE.ActivatedLast"),
-    hint: game.i18n.localize("LANCERINITIATIVE.ActivatedLastDesc"),
+    name: "LancerInitiative.Settings.ActivatedUnitsLast",
+    hint: "LancerInitiative.Settings.ActivatedUnitsLastHint",
     scope: "world",
     config: true,
     type: Boolean,

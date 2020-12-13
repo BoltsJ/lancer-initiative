@@ -28,7 +28,7 @@ export class LancerCombatTracker extends CombatTracker {
   _getEntryContextOptions() {
     let m = [
       {
-        name: game.i18n.localize("LANCERINITIATIVE.AddActivation"),
+        name: "LancerInitiative.AddActivation",
         icon: '<i class="fas fa-plus"></i>',
         callback: async li => {
           const combatant = this.combat.getCombatant(li.data("combatant-id"));
@@ -40,7 +40,7 @@ export class LancerCombatTracker extends CombatTracker {
         },
       },
       {
-        name: game.i18n.localize("LANCERINITIATIVE.RemoveActivation"),
+        name: "LancerInitiative.RemoveActivation",
         icon: '<i class="fas fa-minus"></i>',
         callback: async li => {
           const combatant = this.combat.getCombatant(li.data("combatant-id"));
@@ -54,7 +54,7 @@ export class LancerCombatTracker extends CombatTracker {
         },
       },
       {
-        name: game.i18n.localize("LANCERINITIATIVE.UndoActivation"),
+        name: "LancerInitiative.UndoActivation",
         icon: '<i class="fas fa-undo"></i>',
         callback: li => {
           const combatant = this.combat.getCombatant(li.data("combatant-id"));
