@@ -7,27 +7,23 @@ import { LancerCombatTracker } from "./lancer-combat-tracker.js";
  */
 export class LancerCombat extends Combat {
   /** @override */
-  // @ts-ignore 0.8
   protected _sortCombatants(a: LancerCombatant, b: LancerCombatant): number {
     const module = LancerCombatTracker.config.module;
     if (<boolean | undefined>a.getFlag(module, "dummy") ?? false) return -1;
     if (<boolean | undefined>b.getFlag(module, "dummy") ?? false) return 1;
     // Sort by Players then Neutrals then Hostiles
-    // @ts-ignore 0.8
     const dc = (b.token?.data.disposition ?? -2) - (a.token?.data.disposition ?? -2);
     if (dc !== 0) return dc;
-    // @ts-ignore 0.8
     return super._sortCombatants(a, b);
   }
 
   /** @override */
   protected async _preCreate(
-    data: unknown,
-    options: Entity.CreateOptions,
-    user: string
+    data: ClientDocument["data"],
+    options: unknown,
+    user: User
   ): Promise<void> {
     const module = LancerCombatTracker.config.module;
-    // @ts-ignore 0.8
     const dummy = new CONFIG.Combatant.documentClass({
       flags: {
         [module]: {
@@ -37,11 +33,9 @@ export class LancerCombat extends Combat {
       },
       hidden: true,
     });
-    const combatants = this.combatants.map((c: any) => c.toObject());
+    const combatants = this.combatants.map(c => c.toObject());
     combatants.push(dummy.toObject());
-    // @ts-ignore 0.8
     this.data.update({ combatants });
-    // @ts-ignore 0.8
     return super._preCreate(data, options, user);
   }
 
@@ -50,14 +44,13 @@ export class LancerCombat extends Combat {
    */
   async resetActivations(): Promise<LancerCombatant[]> {
     const module = LancerCombatTracker.config.module;
-    const updates = (<LancerCombatant[]>this.combatants).map(c => {
+    const updates = this.combatants.map(c => {
       return {
-        // @ts-ignore 0.8
         _id: c.id,
         [`flags.${module}.activations.value`]: c.getFlag(module, "activations.max"),
       };
     });
-    // @ts-ignore 0.8
+    // @ts-ignore Conversion is too fraught
     return this.updateEmbeddedDocuments("Combatant", updates);
   }
 
@@ -68,9 +61,7 @@ export class LancerCombat extends Combat {
   }
 
   /** @override */
-  // @ts-ignore 0.8
   async nextRound(): Promise<this> {
-    // @ts-ignore 0.8
     await super.nextRound();
     await this.resetActivations();
     return this;
@@ -99,15 +90,12 @@ export class LancerCombat extends Combat {
   async activateCombatant(id: string): Promise<this> {
     const module = LancerCombatTracker.config.module;
     if (!game.user?.isGM) return this.requestActivation(id);
-    // @ts-ignore 0.8
     const combatant = this.getEmbeddedDocument("Combatant", id);
-    // @ts-ignore 0.8
-    const activations: Activations = combatant.getFlag(module, "activations") ?? {};
+    const activations = combatant?.getFlag(module, "activations") ?? {};
+    if (!isActivations(activations)) throw new Error("Assertion failed for activation data");
     const val = activations.value;
     if (val === 0 || val === undefined) return this;
-    // @ts-ignore 0.8
-    await combatant.setFlag(module, "activations", { value: val - 1, max: activations.max });
-    // @ts-ignore 0.8
+    await combatant?.setFlag(module, "activations", { value: val - 1, max: activations.max });
     const turn = this.turns.findIndex(t => t.id === id);
     return this.update({ turn });
   }
@@ -127,7 +115,6 @@ export class LancerCombatant extends Combatant {
    * @override
    */
   testUserPermission(user: User, _permission: string, _options: unknown): boolean {
-    // @ts-ignore 0.8
     return this.actor?.testUserPermission(user, "update") ?? user.isGM;
   }
 
@@ -136,7 +123,6 @@ export class LancerCombatant extends Combatant {
    * @override
    */
   prepareDerivedData(): void {
-    // @ts-ignore 0.8
     if (!this.parent) return;
     super.prepareDerivedData();
   }
@@ -150,17 +136,14 @@ export class LancerCombatant extends Combatant {
 
   /** @override */
   protected async _preCreate(
-    data: Record<string, unknown>,
+    data: ClientDocument["data"],
     options: unknown,
     user: User
   ): Promise<void> {
     const module = LancerCombatTracker.config.module;
     await super._preCreate(data, options, user);
-    // @ts-ignore 0.8
     if (!this.parent) return;
-    // @ts-ignore 0.8
     if (this.data.flags?.[module]?.activations === undefined)
-      // @ts-ignore 0.8
       this.data.update({
         [`flags.${module}.activations`]: {
           max: this.actor?.getRollData()?.derived?.mm?.Activations ?? 1,
@@ -179,8 +162,8 @@ export class LancerCombatant extends Combatant {
     const activations = <Activations | undefined>this.getFlag(module, "activations");
     return this.update({
       [`flags.${module}.activations`]: {
-        max: Math.clamped((activations?.max ?? 1) + num, 1, 1024),
-        value: Math.clamped((activations?.value ?? 0) + num, 0, 1024),
+        max: Math.max((activations?.max ?? 1) + num, 1),
+        value: Math.max((activations?.value ?? 0) + num, 0),
       },
     });
   }

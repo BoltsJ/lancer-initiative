@@ -5,8 +5,6 @@ import { LancerCombat, LancerCombatant, isActivations } from "./lancer-combat.js
  * buttons and either move or remove the initiative button
  */
 export class LancerCombatTracker extends CombatTracker {
-  // @ts-ignore 0.8
-  combat!: undefined;
   viewed!: LancerCombat | null;
   /**
    * Intercepts the data being sent to the combat tracker window and
@@ -15,10 +13,18 @@ export class LancerCombatTracker extends CombatTracker {
    * updateCombat events being eaten.
    * @override
    */
-  async getData(options?: Application.RenderOptions): Promise<LancerCombatTracker.Data> {
+  async getData(options?: unknown): Promise<object> {
     const config = (this.constructor as typeof LancerCombatTracker).config;
     const appearance = (this.constructor as typeof LancerCombatTracker).appearance;
-    const data = (await super.getData(options)) as LancerCombatTracker.Data;
+    const data = (await super.getData(options)) as {
+      turns: {
+        id: string;
+        css: string;
+        pending: number;
+        finished: number;
+      }[];
+      [x: string]: unknown;
+    };
     const sort = game.settings.get(config.module, "combat-tracker-sort") as boolean;
     const disp: Record<number, string> = {
       [-1]: "enemy",
@@ -26,11 +32,9 @@ export class LancerCombatTracker extends CombatTracker {
       [1]: "player",
     };
     data.turns = data.turns.map(t => {
-      // @ts-ignore 0.8
-      const combatant = this.viewed.getEmbeddedDocument("Combatant", t.id);
-      // @ts-ignore 0.8
-      const activations: unknown = combatant.getFlag(config.module, "activations");
-      if (!isActivations(activations)) throw new Error("Assertion failed for t.flags.activations");
+      const combatant = this.viewed!.getEmbeddedDocument("Combatant", t.id);
+      const activations = combatant.getFlag(config.module, "activations");
+      if (!isActivations(activations)) return t;
       return {
         ...t,
         css: t.css + " " + disp[combatant.token?.data.disposition ?? 0],
@@ -40,7 +44,7 @@ export class LancerCombatTracker extends CombatTracker {
     });
     if (sort) {
       // Not sure why these need to be annotated
-      data.turns.sort(function (a: LancerCombatTracker.Turn, b: LancerCombatTracker.Turn) {
+      data.turns.sort(function (a, b) {
         const aa = a.css.indexOf("active") !== -1 ? 1 : 0;
         const ba = b.css.indexOf("active") !== -1 ? 1 : 0;
         if (ba - aa !== 0) return ba - aa;
@@ -58,7 +62,7 @@ export class LancerCombatTracker extends CombatTracker {
    * handlers.
    * @override
    */
-  protected async _renderInner(data: LancerCombatTracker.Data): Promise<JQuery<HTMLElement>> {
+  protected async _renderInner(data: object): Promise<JQuery<HTMLElement>> {
     const config = (this.constructor as typeof LancerCombatTracker).config;
     const appearance = (this.constructor as typeof LancerCombatTracker).appearance;
     const html = await super._renderInner(data);
@@ -129,7 +133,6 @@ export class LancerCombatTracker extends CombatTracker {
   }
 
   protected async _onAddActivation(li: JQuery<HTMLElement>): Promise<void> {
-    // @ts-ignore 0.8
     const combatant: LancerCombatant = this.viewed!.getEmbeddedDocument(
       "Combatant",
       li.data("combatant-id")
@@ -138,7 +141,6 @@ export class LancerCombatTracker extends CombatTracker {
   }
 
   protected async _onRemoveActivation(li: JQuery<HTMLElement>): Promise<void> {
-    // @ts-ignore 0.8
     const combatant: LancerCombatant = this.viewed!.getEmbeddedDocument(
       "Combatant",
       li.data("combatant-id")
@@ -147,7 +149,6 @@ export class LancerCombatTracker extends CombatTracker {
   }
 
   protected async _onUndoActivation(li: JQuery<HTMLElement>): Promise<void> {
-    // @ts-ignore 0.8
     const combatant: LancerCombatant = this.viewed!.getEmbeddedDocument(
       "Combatant",
       li.data("combatant-id")
@@ -156,8 +157,16 @@ export class LancerCombatTracker extends CombatTracker {
   }
 
   /** @override */
-  protected _getEntryContextOptions(): ContextMenu.Item[] {
-    const m: ContextMenu.Item[] = [
+  protected _getEntryContextOptions(): {
+    name: string;
+    icon: string;
+    callback: (...args: any) => unknown;
+  }[] {
+    const m: {
+      name: string;
+      icon: string;
+      callback: (...args: any) => unknown;
+    }[] = [
       {
         name: game.i18n.localize("LANCERINITIATIVE.AddActivation"),
         icon: '<i class="fas fa-plus"></i>',
@@ -217,8 +226,4 @@ interface LIConfig {
     enemy_color: string;
     done_color: string;
   };
-}
-namespace LancerCombatTracker {
-  export type Turn = CombatTracker.Turn & { pending: number; finished: number };
-  export type Data = CombatTracker.Data & { icon_class: string; turns: Turn[] };
 }

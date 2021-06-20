@@ -92,11 +92,8 @@ function registerSettings(): void {
   });
 
   // Override classes
-  // @ts-ignore 0.8
   CONFIG.Combat.documentClass = LancerCombat;
-  // @ts-ignore 0.8
   CONFIG.Combatant.documentClass = LancerCombatant;
-  // @ts-ignore 0.8
   CONFIG.ui.combat = LancerCombatTracker;
 
   // Call hooks for initialization of Lancer Initiative

@@ -4,7 +4,7 @@
     "outDir": "./lancer-initiative/",
     "sourceMap": true,
     "lib": ["ES6", "ES2017", "DOM"],
-    "types": ["@league-of-foundry-developers/foundry-vtt-types"],
+    "types": [],
     "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true
