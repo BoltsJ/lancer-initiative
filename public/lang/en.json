@@ -20,6 +20,8 @@
   "LANCERINITIATIVE.SortTrackerDesc": "Moves the unit currently taking their turn to the top of the tracker and moves units that have taken their turn to the end of the tracker.",
   "LANCERINITIATIVE.EnableInitiative": "Enable Initiative Rolling",
   "LANCERINITIATIVE.EnableInitiativeDesc": "Adds a button to owned combatants for rolling initiative",
+  "LANCERINITIATIVE.ForceDisposition": "Force Combatant Dispostion",
+  "LANCERINITIATIVE.ForceDispositionDesc": "Force all combatants to appear as the specified disposition. “No Disposition” disables colors.",
   "LANCERINITIATIVE.AddActivation": "Add Activation",
   "LANCERINITIATIVE.RemoveActivation": "Remove Activation",
   "LANCERINITIATIVE.UndoActivation": "Undo Activation"

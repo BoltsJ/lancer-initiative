@@ -13,7 +13,7 @@ jobs:
 
     # Run the compilation step
     - run: npm install
-    - run: npm run build:foundryvtt
+    - run: npm run build
 
     # Remove the 'v' from the tag for versioning
     - id: get_version
@@ -32,7 +32,7 @@ jobs:
 
     # Create a zip file with all files required by the module to add to the release
     - name: Zip Files
-      working-directory: ./lancer-initiative/
+      working-directory: ./dist/
       run: zip -r ./module.zip *
 
     # Create a release for this specific version
@@ -45,6 +45,6 @@ jobs:
         draft: false
         prerelease: true
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './lancer-initiative/module.json, ./lancer-initiative/module.zip'
+        artifacts: './dist/module.json, ./dist/module.zip'
         tag: ${{ github.event.release.tag_name }}
         body: ${{ github.event.release.body }}

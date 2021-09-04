@@ -1,21 +1,28 @@
 {
-  "name": "lancer-initiative",
-  "version": "0.6.2",
+  "name": "fvtt-lancer-initiative",
+  "version": "0.7.0",
   "description": "Lancer Initiative",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "^0.8.9-2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-typescript": "^8.2.5",
     "@types/jquery": "^3.5.6",
     "prettier": "^2.3.2",
-    "typescript": "^4.3.5"
+    "rollup": "^2.56.3",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.3.1",
+    "typescript": "4.3.5"
   },
   "scripts": {
-    "prepare": "tsc",
-    "build:foundryvtt": "tsc --project tsconfig.foundry.json && cp -r ./src/lang ./src/module.json ./src/lancer-initiative.css ./src/templates ./lancer-initiative/",
-    "watch": "tsc --project tsconfig.foundry.json --watch"
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "package": "cd dist && zip -r module.zip *"
   },
   "author": "Bolts",
   "license": "Apache-2.0",
-  "repository": "https://github.com/BoltsJ/lancer-initiative.git"
+  "repository": "https://github.com/BoltsJ/lancer-initiative.git",
+  "dependencies": {
+    "lancer-initiative": "github:BoltsJ/lib-lancer-initiative"
+  }
 }

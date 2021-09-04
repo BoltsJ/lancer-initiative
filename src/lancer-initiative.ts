@@ -1,35 +1,38 @@
-import { LancerCombat, LancerCombatant } from "./module/lancer-combat.js";
-import { LancerCombatTracker } from "./module/lancer-combat-tracker.js";
-import { LIForm } from "./module/li-form.js";
+import {
+  LancerCombat,
+  LancerCombatTracker,
+  LancerCombatant,
+  LancerInitiativeConfigForm,
+  addMissingDummy,
+  getTrackerAppearance,
+  setAppearance,
+} from "lancer-initiative";
 
-type Appearance = typeof LancerCombatTracker["trackerAppearance"];
 const module = "lancer-initiative";
 const templatePath = "modules/lancer-initiative/templates/lancer-combat-tracker.html";
 
-function migrateSettings(): void {
-  if (<number>game.settings.get(module, "combat-tracker-migrated-settings") >= 1) return;
-
-  console.log("lancer-initiative | Migrating Settings");
-
-  game.settings.set(
-    module,
-    "combat-tracker-appearance",
-    <Appearance>game.settings.get(module, "appearance")
-  );
-  game.settings.set(module, "combat-tracker-sort", <boolean>game.settings.get(module, "sort"));
-  game.settings.set(
-    module,
-    "combat-tracker-enable-initiative",
-    <boolean>game.settings.get(module, "enable-initiative")
-  );
-  game.settings.set(module, "combat-tracker-migrated-settings", 1);
-}
-
 function registerSettings(): void {
   console.log(`${module} | Initializing Lancer Initiative Module`);
-  const config = LancerCombatTracker.trackerConfig;
-  config.module = module;
-  config.templatePath = templatePath;
+  if (!!CONFIG.LancerInitiative?.module) {
+    throw new Error(
+      `${module} | Lancer Intitiative already initiatilized, does your system implement it?`
+    );
+  }
+  const config = (CONFIG.LancerInitiative = {
+    module,
+    templatePath,
+    def_appearance: {
+      icon: "fas fa-chevron-circle-right",
+      icon_size: 1.5,
+      player_color: "#44abe0",
+      friendly_color: "#44abe0",
+      neutral_color: "#146464",
+      enemy_color: "#d98f30",
+      done_color: "#444444",
+    },
+    activation_path: "derived.mm.Activations",
+  });
+  Object.defineProperty(CONFIG.LancerInitiative, "module", { writable: false });
 
   switch (game.system.id) {
     case "lancer":
@@ -42,7 +45,7 @@ function registerSettings(): void {
   game.settings.registerMenu(module, "lancerInitiative", {
     name: game.i18n.localize("LANCERINITIATIVE.IconSettingsMenu"),
     label: game.i18n.localize("LANCERINITIATIVE.IconSettingsMenu"),
-    type: LIForm,
+    type: LancerInitiativeConfigForm,
     restricted: true,
   });
   game.settings.register(module, "combat-tracker-appearance", {
@@ -69,11 +72,22 @@ function registerSettings(): void {
     onChange: () => game.combats?.render(),
     default: false,
   });
-  game.settings.register(module, "combat-tracker-activation-path", {
+  game.settings.register(module, "combat-tracker-force-disposition", {
+    name: game.i18n.localize("LANCERINITIATIVE.ForceDisposition"),
+    hint: game.i18n.localize("LANCERINITIATIVE.ForceDispositionDesc"),
     scope: "world",
     config: false,
     type: String,
-    default: "derived.mm.Activations",
+    choices: {
+      default: "———",
+      PLAYER: "Player",
+      FRIENDLY: "Friendly",
+      NEUTRAL: "Neutral",
+      HOSTILE: "Hostile",
+      OFF: "No Disposition",
+    },
+    onChange: () => game.combats?.render(),
+    default: "default",
   });
   game.settings.register(module, "combat-tracker-migrated-settings", {
     scope: "world",
@@ -82,84 +96,20 @@ function registerSettings(): void {
     default: 0,
   });
 
-  // Old settings to be migrated
-  game.settings.register(module, "appearance", {
-    scope: "world",
-    config: false,
-    type: Object,
-  });
-  game.settings.register(module, "sort", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: false,
-  });
-  game.settings.register(module, "enable-initiative", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: false,
-  });
-
   // Override classes
   CONFIG.Combat.documentClass = LancerCombat;
   CONFIG.Combatant.documentClass = LancerCombatant;
   CONFIG.ui.combat = LancerCombatTracker;
 
-  // Call hooks for initialization of Lancer Initiative
+  // Call hooks to signal other modules of the initialization
   Hooks.callAll("LancerIntitaitveInit");
 
   // Set the css vars
-  setAppearance(LancerCombatTracker.trackerAppearance);
-}
-
-function setAppearance(val: Partial<Appearance>): void {
-  const defaults = LancerCombatTracker.trackerConfig.def_appearance;
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-icon-size",
-    `${val?.icon_size ?? defaults.icon_size}rem`
-  );
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-player-color",
-    val?.player_color ?? defaults.player_color
-  );
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-friendly-color",
-    val?.friendly_color ?? defaults.friendly_color
-  );
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-neutral-color",
-    val?.neutral_color ?? defaults.neutral_color
-  );
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-enemy-color",
-    val?.enemy_color ?? defaults.enemy_color
-  );
-  document.documentElement.style.setProperty(
-    "--lancer-initiative-done-color",
-    val?.done_color ?? defaults.done_color
-  );
-  game.combats?.render();
-}
-
-function addMissingDummy(): void {
-  if (!game.user?.isGM) return;
-  game.combats!.forEach(combat => {
-    if (!combat.combatants.find(combatant => !!combatant.getFlag(module, "dummy"))) {
-      console.log(`${module} | Adding missing dummy combatant to combat with id ${combat.id}`);
-      combat.createEmbeddedDocuments("Combatant", [
-        {
-          flags: { [module]: { dummy: true, activations: { max: 0 } } },
-          hidden: true,
-        },
-      ]);
-    }
-  });
+  setAppearance(getTrackerAppearance());
 }
 
 Hooks.once("init", registerSettings);
 Hooks.once("ready", addMissingDummy);
-Hooks.once("ready", migrateSettings);
 
 declare global {
   interface DocumentClassConfig {
@@ -167,4 +117,3 @@ declare global {
     Combatant: typeof LancerCombatant;
   }
 }
-
