@@ -1,17 +1,19 @@
 {
-  "LANCERINITIATIVE.PCColor": "Color del botón para jugadores",
-  "LANCERINITIATIVE.PCColorDesc": "Predeterminado: #44abe0",
-  "LANCERINITIATIVE.NeutralColor": "Color del botón para neutrales",
-  "LANCERINITIATIVE.NeutralColorDesc": "Predeterminado: #146464",
-  "LANCERINITIATIVE.EnemyColor": "Color del botón para enemigos",
-  "LANCERINITIATIVE.EnemyColorDesc": "Predeterminado: #d98f30",
-  "LANCERINITIATIVE.DoneColor": "Color del botón para inactivos",
-  "LANCERINITIATIVE.DoneColorDesc": "Predeterminado: #444444",
-  "LANCERINITIATIVE.Icon": "Icono de acción",
-  "LANCERINITIATIVE.IconDesc": "Clases de CSS que definen el icono de activación",
-  "LANCERINITIATIVE.ActivatedLast": "Unidades ya activadas al final",
-  "LANCERINITIATIVE.ActivatedLastDesc": "Mueve las unidades que ya pasaron su turno al final del asistente.",
-  "LANCERINITIATIVE.AddActivation": "Añadir activación",
-  "LANCERINITIATIVE.RemoveActivation": "Quitar activación",
-  "LANCERINITIATIVE.UndoActivation": "Restaurar activación"
+  "LANCERINITIATIVE": {
+    "PCColor": "Color del botón para jugadores",
+    "PCColorDesc": "Predeterminado: #44abe0",
+    "NeutralColor": "Color del botón para neutrales",
+    "NeutralColorDesc": "Predeterminado: #146464",
+    "EnemyColor": "Color del botón para enemigos",
+    "EnemyColorDesc": "Predeterminado: #d98f30",
+    "DoneColor": "Color del botón para inactivos",
+    "DoneColorDesc": "Predeterminado: #444444",
+    "Icon": "Icono de acción",
+    "IconDesc": "Clases de CSS que definen el icono de activación",
+    "ActivatedLast": "Unidades ya activadas al final",
+    "ActivatedLastDesc": "Mueve las unidades que ya pasaron su turno al final del asistente.",
+    "AddActivation": "Añadir activación",
+    "RemoveActivation": "Quitar activación",
+    "UndoActivation": "Restaurar activación"
+  }
 }
