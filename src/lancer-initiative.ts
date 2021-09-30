@@ -2,11 +2,11 @@ import {
   LancerCombat,
   LancerCombatTracker,
   LancerCombatant,
-  LancerInitiativeConfigForm,
   addMissingDummy,
   getTrackerAppearance,
   setAppearance,
 } from "lancer-initiative";
+import { LancerInitiativeConfigForm } from "./li-form";
 
 const module = "lancer-initiative";
 const templatePath = "modules/lancer-initiative/templates/lancer-combat-tracker.html";
@@ -72,29 +72,6 @@ function registerSettings(): void {
     onChange: () => game.combats?.render(),
     default: false,
   });
-  game.settings.register(module, "combat-tracker-force-disposition", {
-    name: game.i18n.localize("LANCERINITIATIVE.ForceDisposition"),
-    hint: game.i18n.localize("LANCERINITIATIVE.ForceDispositionDesc"),
-    scope: "world",
-    config: false,
-    type: String,
-    choices: {
-      default: "———",
-      PLAYER: "Player",
-      FRIENDLY: "Friendly",
-      NEUTRAL: "Neutral",
-      HOSTILE: "Hostile",
-      OFF: "No Disposition",
-    },
-    onChange: () => game.combats?.render(),
-    default: "default",
-  });
-  game.settings.register(module, "combat-tracker-migrated-settings", {
-    scope: "world",
-    config: false,
-    type: Number,
-    default: 0,
-  });
 
   // Override classes
   CONFIG.Combat.documentClass = LancerCombat;
@@ -110,10 +87,3 @@ function registerSettings(): void {
 
 Hooks.once("init", registerSettings);
 Hooks.once("ready", addMissingDummy);
-
-declare global {
-  interface DocumentClassConfig {
-    Combat: typeof LancerCombat;
-    Combatant: typeof LancerCombatant;
-  }
-}

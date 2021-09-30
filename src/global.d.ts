@@ -18,4 +18,9 @@ declare global {
   interface CONFIG {
     LancerInitiative: LancerInitiativeConfig<"lancer-initiative">;
   }
+
+  interface DocumentClassConfig {
+    Combat: typeof LancerCombat;
+    Combatant: typeof LancerCombatant;
+  }
 }
