@@ -14,6 +14,12 @@ const templatePath = "modules/lancer-initiative/templates/lancer-combat-tracker.
 function registerSettings(): void {
   console.log(`${module} | Initializing Lancer Initiative Module`);
   if (!!CONFIG.LancerInitiative?.module) {
+    Hooks.once("ready", () =>
+      ui.notifications!.warn(
+        "The system you are using implements lancer initiative natively. You can disable the module",
+        { permanent: true }
+      )
+    );
     throw new Error(
       `${module} | Lancer Intitiative already initiatilized, does your system implement it?`
     );
@@ -30,7 +36,7 @@ function registerSettings(): void {
       enemy_color: "#d98f30",
       done_color: "#444444",
     },
-    activation_path: "derived.mm.Activations",
+    activations: "derived.mm.Activations",
   });
   Object.defineProperty(CONFIG.LancerInitiative, "module", { writable: false });
 
@@ -63,15 +69,23 @@ function registerSettings(): void {
     onChange: () => game.combats?.render(),
     default: false,
   });
+  // Allows initiative rolling to be toggled. Optional for downstreams.
   game.settings.register(module, "combat-tracker-enable-initiative", {
     name: game.i18n.localize("LANCERINITIATIVE.EnableInitiative"),
     hint: game.i18n.localize("LANCERINITIATIVE.EnableInitiativeDesc"),
     scope: "world",
     config: !!CONFIG.Combat.initiative.formula,
     type: Boolean,
-    onChange: () => game.combats?.render(),
+    onChange: v => {
+      CONFIG.LancerInitiative.enable_initiative = v;
+      game.combats?.render();
+    },
     default: false,
   });
+  CONFIG.LancerInitiative.enable_initiative = game.settings.get(
+    module,
+    "combat-tracker-enable-initiative"
+  );
 
   // Override classes
   CONFIG.Combat.documentClass = LancerCombat;

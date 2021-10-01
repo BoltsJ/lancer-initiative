@@ -1,5 +1,5 @@
 import { getTrackerAppearance } from "lancer-initiative";
-type Appearance = typeof CONFIG.LancerInitiative.def_appearance;
+type Appearance = NonNullable<typeof CONFIG.LancerInitiative.def_appearance>;
 
 /**
  * Settings form for customizing the icon appearance of the icon used in the
@@ -54,7 +54,7 @@ export class LancerInitiativeConfigForm extends FormApplication<
     game.settings.set(
       config.module,
       "combat-tracker-appearance",
-      foundry.utils.diffObject(config.def_appearance, data, { inner: true })
+      foundry.utils.diffObject(config.def_appearance!, data, { inner: true })
     );
   }
 
