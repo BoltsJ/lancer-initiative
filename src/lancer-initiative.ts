@@ -39,10 +39,20 @@ function registerSettings(): void {
   });
   Object.defineProperty(CONFIG.LancerInitiative, "module", { writable: false });
 
+  const old_combat = CONFIG.Combat.documentClass;
+
+  // Override classes
+  CONFIG.Combat.documentClass = LancerCombat;
+  CONFIG.Combatant.documentClass = LancerCombatant;
+  CONFIG.ui.combat = LancerCombatTracker;
+
   switch (game.system.id) {
     case "lancer":
       config.def_appearance.icon = "cci cci-activate";
       config.def_appearance.icon_size = 2;
+      break;
+    case "starwarsffg":
+      import("./starwarsffg").then(m => m.setup(old_combat));
       break;
     default:
   }
@@ -85,11 +95,6 @@ function registerSettings(): void {
     module,
     "combat-tracker-enable-initiative"
   );
-
-  // Override classes
-  CONFIG.Combat.documentClass = LancerCombat;
-  CONFIG.Combatant.documentClass = LancerCombatant;
-  CONFIG.ui.combat = LancerCombatTracker;
 
   // Call hooks to signal other modules of the initialization
   Hooks.callAll("LancerInitiativeInit");
