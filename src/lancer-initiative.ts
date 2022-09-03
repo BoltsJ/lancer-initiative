@@ -63,6 +63,7 @@ function registerSettings(): void {
     config: false,
     type: Object,
     onChange: setAppearance,
+    default: {},
   });
   game.settings.register(module, "combat-tracker-sort", {
     name: game.i18n.localize("LANCERINITIATIVE.SortTracker"),
