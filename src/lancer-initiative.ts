@@ -72,7 +72,7 @@ function registerSettings(): void {
     config: true,
     type: Boolean,
     onChange: () => game.combats?.render(),
-    default: false,
+    default: true,
   });
   // Allows initiative rolling to be toggled. Optional for downstreams.
   game.settings.register(module, "combat-tracker-enable-initiative", {
