@@ -38,7 +38,7 @@ function registerSettings(): void {
   };
   Object.defineProperty(CONFIG.LancerInitiative, "module", { writable: false });
 
-  const old_combat = CONFIG.Combat.documentClass;
+  // const old_combat = CONFIG.Combat.documentClass;
 
   // Override classes
   CONFIG.Combat.documentClass = LancerCombat;
@@ -47,7 +47,7 @@ function registerSettings(): void {
 
   switch (game.system.id) {
     case "starwarsffg":
-      import("./starwarsffg").then(m => m.setup(old_combat));
+      // import("./starwarsffg").then(m => m.setup(old_combat));
       break;
     default:
   }
