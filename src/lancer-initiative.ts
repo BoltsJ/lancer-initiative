@@ -8,7 +8,7 @@ import {
 import { LancerInitiativeConfigForm } from "./li-form";
 
 const module = "lancer-initiative";
-const templatePath = "modules/lancer-initiative/templates/lancer-combat-tracker.html";
+const templatePath = "modules/lancer-initiative/templates/lancer-combat-tracker.hbs";
 
 function registerSettings(): void {
   console.log(`${module} | Initializing Lancer Initiative Module`);
