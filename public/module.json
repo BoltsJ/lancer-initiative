@@ -1,18 +1,18 @@
 {
     "name": "lancer-initiative",
+    "id": "lancer-initiative",
     "title": "Lancer Initiative",
     "description": "Implements Lancer's popcorn style initiative in Foundry VTT",
-    "author": "Bolts",
+    "authors": [{ "name": "Bolts" }],
     "type": "module",
-    "version": "23-dev",
-    "minimumCoreVersion": "9",
-    "compatibleCoreVersion": "9",
-    "esmodules": [
-        "./lancer-initiative.js"
-    ],
-    "styles": [
-        "./lancer-initiative.css"
-    ],
+    "version": "24-dev",
+    "compatibility": {
+        "minimum": 10,
+        "verified": "10.284",
+        "maximum": 10
+    },
+    "esmodules": ["./lancer-initiative.js"],
+    "styles": ["./lancer-initiative.css"],
     "languages": [
         {
             "lang": "en",
