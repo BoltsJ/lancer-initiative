@@ -6,10 +6,12 @@
     "authors": [{ "name": "Bolts" }],
     "type": "module",
     "version": "24-dev",
+    "compatibleCoreVersion": "10.284",
+    "minimumCoreVersion": "10",
     "compatibility": {
-        "minimum": 10,
+        "minimum": "10",
         "verified": "10.284",
-        "maximum": 10
+        "maximum": "10"
     },
     "esmodules": ["./lancer-initiative.js"],
     "styles": ["./lancer-initiative.css"],
