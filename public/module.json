@@ -1,13 +1,10 @@
 {
-    "name": "lancer-initiative",
     "id": "lancer-initiative",
     "title": "Lancer Initiative",
     "description": "Implements Lancer's popcorn style initiative in Foundry VTT",
     "authors": [{ "name": "Bolts" }],
     "type": "module",
-    "version": "24-dev",
-    "compatibleCoreVersion": "10.284",
-    "minimumCoreVersion": "10",
+    "version": "25-dev",
     "compatibility": {
         "minimum": "10",
         "verified": "10.284",

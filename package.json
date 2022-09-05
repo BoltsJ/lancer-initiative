@@ -1,6 +1,4 @@
 {
-  "name": "fvtt-lancer-initiative",
-  "version": "0.7.0",
   "description": "Lancer Initiative",
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "^9.255.2",
