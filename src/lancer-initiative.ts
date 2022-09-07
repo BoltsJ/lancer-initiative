@@ -53,8 +53,8 @@ function registerSettings(): void {
   }
 
   game.settings.registerMenu(module, "lancerInitiative", {
-    name: game.i18n.localize("LANCERINITIATIVE.IconSettingsMenu"),
-    label: game.i18n.localize("LANCERINITIATIVE.IconSettingsMenu"),
+    name: "LANCERINITIATIVE.IconSettingsMenu",
+    label: "LANCERINITIATIVE.IconSettingsMenu",
     type: LancerInitiativeConfigForm,
     restricted: true,
   });
@@ -66,8 +66,8 @@ function registerSettings(): void {
     default: {},
   });
   game.settings.register(module, "combat-tracker-sort", {
-    name: game.i18n.localize("LANCERINITIATIVE.SortTracker"),
-    hint: game.i18n.localize("LANCERINITIATIVE.SortTrackerDesc"),
+    name: "LANCERINITIATIVE.SortTracker",
+    hint: "LANCERINITIATIVE.SortTrackerDesc",
     scope: "world",
     config: true,
     type: Boolean,
@@ -76,8 +76,8 @@ function registerSettings(): void {
   });
   // Allows initiative rolling to be toggled. Optional for downstreams.
   game.settings.register(module, "combat-tracker-enable-initiative", {
-    name: game.i18n.localize("LANCERINITIATIVE.EnableInitiative"),
-    hint: game.i18n.localize("LANCERINITIATIVE.EnableInitiativeDesc"),
+    name: "LANCERINITIATIVE.EnableInitiative",
+    hint: "LANCERINITIATIVE.EnableInitiativeDesc",
     scope: "world",
     config: !!CONFIG.Combat.initiative.formula,
     type: Boolean,
